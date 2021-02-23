@@ -20,12 +20,10 @@ namespace WebApplication.Models
                 });
             }
             db.Shops.AddRange(shops);
-
-            var visits = new List<Visit>();
             
-            for (int i = 0; i < 100000; i++)
+            for (int i = 0; i < 1000000000; i++)
             {
-                visits.Add(new Visit
+                db.Visits.Add(new Visit
                 {
                     Age = _gen.Next(1, 80),
                     Date = RandomDay(),
@@ -34,8 +32,6 @@ namespace WebApplication.Models
                     Shop = shops[_gen.Next(0, 9)]
                 });
             }
-
-            db.Visits.AddRange(visits);
             
             db.SaveChanges();
             
@@ -44,19 +40,18 @@ namespace WebApplication.Models
         
         DateTime RandomDay()
         {
-            int hour = _gen.Next(0, 24);
-            int minute = _gen.Next(0, 59);
-            int second = _gen.Next(0, 59);
+            var hour = _gen.Next(0, 24);
+            var minute = _gen.Next(0, 59);
+            var second = _gen.Next(0, 59);
             DateTime start = new DateTime(2021, 1, 1, hour, minute, second);
-            int range = (DateTime.Today - start).Days;
+            var range = (DateTime.Today - start).Days;
             return start.AddDays(_gen.Next(range));
         }
 
         Sex GetRandomSex()
         {
             Array values = Enum.GetValues(typeof(Sex));
-            var sex = (Sex)values.GetValue(_gen.Next(values.Length));
-            return sex;
+            return (Sex)values.GetValue(_gen.Next(values.Length));
         } 
     }
 }
