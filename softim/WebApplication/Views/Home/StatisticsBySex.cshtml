@@ -1,0 +1,35 @@
+﻿@model IEnumerable<WebApplication.Dtos.VisitsBySexDto>
+@{
+    ViewBag.Title = "Statistics by sex";
+}
+
+<div class="row">
+    @Html.BeginForm("StatisticsBySex", "Home", FormMethod.Post)
+</div>
+
+<div class="row">
+    <h3>Statistics by sex</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Shop</th>
+            <th scope="col">Address</th>
+            <th scope="col">Date</th>
+            <th scope="col">Mans</th>
+            <th scope="col">Womans</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var v in Model)
+        {
+            <tr>
+                <th scope="row">@v.ShopName</th>
+                <td>@v.Address</td>
+                <td>@v.Date.ToShortDateString()</td>
+                <td>@v.Mans</td>
+                <td>@v.Womans</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

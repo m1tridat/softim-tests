@@ -1,0 +1,34 @@
+﻿@model IEnumerable<WebApplication.Dtos.VisitsByAgeDto>
+@{
+    ViewBag.Title = "Statistics by age";
+}
+<div class="row">
+    <h3>Statistics by age</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Shop</th>
+            <th scope="col">Address</th>
+            <th scope="col">Date</th>
+            <th scope="col">Under 20</th>
+            <th scope="col">Between 20 and 40</th>
+            <th scope="col">Between 40 and 60</th>
+            <th scope="col">Upper 60</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var v in Model)
+        {
+            <tr>
+                <th scope="row">@v.ShopName</th>
+                <td>@v.Address</td>
+                <td>@v.Date.ToShortDateString()</td>
+                <td>@v.Under20</td>
+                <td>@v.Between20And40</td>
+                <td>@v.Between40And60</td>
+                <td>@v.Upper60</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

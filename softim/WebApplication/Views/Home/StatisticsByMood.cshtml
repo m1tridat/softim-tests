@@ -1,0 +1,33 @@
+﻿@model IEnumerable<WebApplication.Dtos.VisitsByMoodDto>
+@{
+    ViewBag.Title = "Statistics by mood";
+}
+
+<div class="row">
+    <h3>Statistics by mood</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Shop</th>
+            <th scope="col">Address</th>
+            <th scope="col">Date</th>
+            <th scope="col">Satisfied</th>
+            <th scope="col">Sad</th>
+            <th scope="col">Andgry</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var v in Model)
+        {
+            <tr>
+                <th scope="row">@v.ShopName</th>
+                <td>@v.Address</td>
+                <td>@v.Date.ToShortDateString()</td>
+                <td>@v.Satisfied</td>
+                <td>@v.Sad</td>
+                <td>@v.Andgry</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
