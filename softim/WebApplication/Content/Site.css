@@ -22,3 +22,7 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.filter-form {
+    margin: 30px 0 !important;
+}

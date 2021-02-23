@@ -11,23 +11,36 @@ namespace WebApplication.Controllers
     {
         Context db = new Context();
         
-        public ActionResult Index()
+        public ActionResult Index(int? shopId, DateTime? date)
         {
+            var shops = db.Shops
+                .OrderBy(x => x.Name)
+                .ToList();
+            
             var visits = db.Visits
                 .Include(x => x.Shop)
+                .Where(x => shopId == null || x.ShopId == shopId)
+                .Where(x => date == null || DbFunctions.TruncateTime(x.Date) == date)
                 .OrderByDescending(x => x.Date)
                 .Take(100)
                 .ToList();
             
             ViewBag.Visits = visits;
+            ViewBag.Shops = new SelectList(shops,"Id","Name");
             
             return View();
         }
 
-        public ActionResult StatisticsBySex()
+        public ActionResult StatisticsBySex(int? shopId, DateTime? date)
         {
+            var shops = db.Shops
+                .OrderBy(x => x.Name)
+                .ToList();
+            
             var visits = db.Visits
                 .Include(x => x.Shop)
+                .Where(x => shopId == null || x.ShopId == shopId)
+                .Where(x => date == null || DbFunctions.TruncateTime(x.Date) == date)
                 .ToList();
 
             var visitsBySex = visits
@@ -43,13 +56,22 @@ namespace WebApplication.Controllers
                 .OrderByDescending(x => x.Date)
                 .ToList();
             
+            
+            ViewBag.Shops = new SelectList(shops,"Id","Name");
+            
             return View(visitsBySex);
         }
         
-        public ActionResult StatisticsByAge()
+        public ActionResult StatisticsByAge(int? shopId, DateTime? date)
         {
+            var shops = db.Shops
+                .OrderBy(x => x.Name)
+                .ToList();
+            
             var visits = db.Visits
                 .Include(x => x.Shop)
+                .Where(x => shopId == null || x.ShopId == shopId)
+                .Where(x => date == null || DbFunctions.TruncateTime(x.Date) == date)
                 .ToList();
 
             var visitsByAge = visits
@@ -67,13 +89,21 @@ namespace WebApplication.Controllers
                 .OrderByDescending(x => x.Date)
                 .ToList();
             
+            ViewBag.Shops = new SelectList(shops,"Id","Name");
+            
             return View(visitsByAge);
         }
         
-        public ActionResult StatisticsByMood()
+        public ActionResult StatisticsByMood(int? shopId, DateTime? date)
         {
+            var shops = db.Shops
+                .OrderBy(x => x.Name)
+                .ToList();
+            
             var visits = db.Visits
                 .Include(x => x.Shop)
+                .Where(x => shopId == null || x.ShopId == shopId)
+                .Where(x => date == null || DbFunctions.TruncateTime(x.Date) == date)
                 .ToList();
 
             var visitsByMood = visits
@@ -89,6 +119,9 @@ namespace WebApplication.Controllers
                 })
                 .OrderByDescending(x => x.Date)
                 .ToList();
+            
+            
+            ViewBag.Shops = new SelectList(shops,"Id","Name");
             
             return View(visitsByMood);
         }
