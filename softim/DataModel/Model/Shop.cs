@@ -1,5 +1,8 @@
-﻿namespace DataModel.Model
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace DataModel.Model
 {
+    [Index("Id")]
     public class Shop
     {
         public int Id { get; set; }

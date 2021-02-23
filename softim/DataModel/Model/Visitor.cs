@@ -1,16 +1,15 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using shop.Enums;
 
 namespace DataModel.Model
 {
+    [Index("Id", "Age", "Sex", "Mood")]
     public class Visitor
     {
-        [Index]
         public Guid Id { get; set; }
         public int Age { get; set; }
         public Sex Sex { get; set; }
-        public int MoodId { get; set; }
-        public Mood Mood { get; set; }
+        public int Mood { get; set; }
     }
 }
