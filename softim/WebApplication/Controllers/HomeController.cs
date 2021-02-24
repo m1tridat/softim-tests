@@ -18,17 +18,15 @@ namespace WebApplication.Controllers
                 .ToList();
             
             var visits = db.Visits
-                .Include(x => x.Shop)
                 .Where(x => shopId == null || x.ShopId == shopId)
                 .Where(x => date == null || DbFunctions.TruncateTime(x.Date) == date)
                 .OrderByDescending(x => x.Date)
                 .Take(100)
                 .ToList();
             
-            ViewBag.Visits = visits;
             ViewBag.Shops = new SelectList(shops,"Id","Name");
             
-            return View();
+            return View(visits);
         }
 
         public ActionResult StatisticsBySex(int? shopId, DateTime? date)
@@ -38,18 +36,18 @@ namespace WebApplication.Controllers
                 .ToList();
             
             var visits = db.Visits
-                .Include(x => x.Shop)
                 .Where(x => shopId == null || x.ShopId == shopId)
-                .Where(x => date == null || DbFunctions.TruncateTime(x.Date) == date)
+                .Where(x => date == null ? DateTime.Today.Date == DbFunctions.TruncateTime(x.Date) : DbFunctions.TruncateTime(x.Date) == date)
+                .OrderByDescending(x => x.Date)
                 .ToList();
 
             var visitsBySex = visits
                 .GroupBy(x => new {x.ShopId, x.Date.Date})
                 .Select(x => new VisitsBySexDto
                 {
-                    ShopName = x.First().Shop.Name,
+                    ShopName = shops.FirstOrDefault(s => s.Id == x.Key.ShopId)?.Name,
                     Date = x.Key.Date,
-                    Address = x.First().Shop.Address,
+                    Address = shops.FirstOrDefault(s => s.Id == x.Key.ShopId)?.Address,
                     Mans = x.Count(v => v.Sex == Sex.Man),
                     Womans = x.Count(v => v.Sex == Sex.Woman)
                 })
@@ -67,20 +65,20 @@ namespace WebApplication.Controllers
             var shops = db.Shops
                 .OrderBy(x => x.Name)
                 .ToList();
-            
-            var visits = db.Visits
-                .Include(x => x.Shop)
-                .Where(x => shopId == null || x.ShopId == shopId)
-                .Where(x => date == null || DbFunctions.TruncateTime(x.Date) == date)
-                .ToList();
 
+            var visits = db.Visits
+                .Where(x => shopId == null || x.ShopId == shopId)
+                .Where(x => date == null ? DateTime.Today.Date == DbFunctions.TruncateTime(x.Date) : DbFunctions.TruncateTime(x.Date) == date)
+                .OrderByDescending(x => x.Date)
+                .ToList();
+            
             var visitsByAge = visits
-                .GroupBy(x => new {x.ShopId, x.Date.Date})
+                .GroupBy(x => new { x.ShopId, x.Date.Date })
                 .Select(x => new VisitsByAgeDto
                 {
-                    ShopName = x.First().Shop.Name,
+                    ShopName = shops.FirstOrDefault(s => s.Id == x.Key.ShopId)?.Name,
                     Date = x.Key.Date,
-                    Address = x.First().Shop.Address,
+                    Address = shops.FirstOrDefault(s => s.Id == x.Key.ShopId)?.Address,
                     Under20 = x.Count(v => v.Age <= 20),
                     Between20And40 = x.Count(v => v.Age >= 20 && v.Age <= 40),
                     Between40And60 = x.Count(v => v.Age >= 40 && v.Age <= 60),
@@ -101,18 +99,17 @@ namespace WebApplication.Controllers
                 .ToList();
             
             var visits = db.Visits
-                .Include(x => x.Shop)
                 .Where(x => shopId == null || x.ShopId == shopId)
-                .Where(x => date == null || DbFunctions.TruncateTime(x.Date) == date)
+                .Where(x => date == null ? DateTime.Today.Date == DbFunctions.TruncateTime(x.Date) : DbFunctions.TruncateTime(x.Date) == date)
                 .ToList();
 
             var visitsByMood = visits
                 .GroupBy(x => new {x.ShopId, x.Date.Date})
                 .Select(x => new VisitsByMoodDto
                 {
-                    ShopName = x.First().Shop.Name,
+                    ShopName = shops.FirstOrDefault(s => s.Id == x.Key.ShopId)?.Name,
                     Date = x.Key.Date,
-                    Address = x.First().Shop.Address,
+                    Address = shops.FirstOrDefault(s => s.Id == x.Key.ShopId)?.Address,
                     Satisfied = x.Count(v => v.Mood > 7),
                     Sad = x.Count(v => v.Mood >= 4 && v.Mood <= 7),
                     Andgry = x.Count(v => v.Mood < 4),
