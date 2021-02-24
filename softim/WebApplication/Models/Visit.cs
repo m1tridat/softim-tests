@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication.Models
@@ -6,6 +7,7 @@ namespace WebApplication.Models
     public class Visit
     {
         [Index]
+        [Key]
         public int Id { get; set; }
         [Index]
         public DateTime Date { get; set; }
@@ -19,7 +21,7 @@ namespace WebApplication.Models
         public int Mood { get; set; }
         
         
-        
+        [ForeignKey("ShopId")]
         public Shop Shop { get; set; }
     }
 }

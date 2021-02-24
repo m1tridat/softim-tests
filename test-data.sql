@@ -2,7 +2,7 @@ DELETE FROM Shops;
 DELETE FROM Visits;
 
 Declare @AmounOfVisits int
-Set @AmounOfVisits = 1000000 -- Set amount of test data
+Set @AmounOfVisits = 1000 -- Set amount of test data
 
 Declare @Id int
 Set @Id = 1
@@ -11,7 +11,6 @@ While @Id <= 100
 Begin 
    Insert Into Shops values ('Shop #' + CAST(@Id as nvarchar(10)),
               'Address of shop #' + CAST(@Id as nvarchar(10)))
-   Print @Id
    Set @Id = @Id + 1
 End
 
@@ -50,7 +49,7 @@ DECLARE @ToDate   DATETIME
 DECLARE @RandomDateTime DATETIME
 
 SET @FromDate = '20210101' 
-SET @ToDate = '20210224'
+SET @ToDate = CAST(GETDATE() + 1 AS DATETIME)
 
 Declare @count int
 Set @count = 1
